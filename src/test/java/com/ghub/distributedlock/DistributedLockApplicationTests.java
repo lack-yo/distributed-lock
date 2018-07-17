@@ -31,11 +31,9 @@ public class DistributedLockApplicationTests {
     public void testObj() throws InterruptedException {
         User user = new User("xxxx", 18);
         ValueOperations<String, User> operations = redisTemplate.opsForValue();
-        operations.set("com.neox", user);
-        operations.set("com.neo.f", user, 1, TimeUnit.SECONDS);
+        operations.set("setUser", user, 1, TimeUnit.SECONDS);
         Thread.sleep(1000);
-        //redisTemplate.delete("com.neo.f");
-        boolean exists = redisTemplate.hasKey("com.neo.f");
+        boolean exists = redisTemplate.hasKey("setUser");
         if (exists) {
             System.out.println("exists is true");
         } else {
