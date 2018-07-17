@@ -1,5 +1,6 @@
 package com.ghub.distributedlock;
 
+import com.ghub.distributedlock.provide.DistributeLockService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,8 @@ public class DistributedLockApplicationTests {
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private DistributeLockService distributeLockService;
 
     @Test
     public void testString() {
@@ -39,6 +42,28 @@ public class DistributedLockApplicationTests {
         } else {
             System.out.println("exists is false");
         }
+    }
+
+    @Test
+    public void testLock() throws InterruptedException {
+        String key = "test";
+        boolean success = distributeLockService.lock(key, 10);
+        System.out.println("lock success:" + success);
+        boolean success1 = distributeLockService.lock(key, 5);
+        System.out.println("lock success1:" + success1);
+        Thread.sleep(10000);
+        boolean success2 = distributeLockService.lock(key, 5);
+        System.out.println("lock success2:" + success2);
+    }
+
+    @Test
+    public void testLock1() throws InterruptedException {
+        String key = "test";
+        boolean success = distributeLockService.lock(key, 10);
+        System.out.println("lock success:" + success);
+        distributeLockService.release(key);
+        boolean success2 = distributeLockService.lock(key, 5);
+        System.out.println("lock success2:" + success2);
     }
 
     class User {
