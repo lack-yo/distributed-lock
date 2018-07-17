@@ -63,7 +63,7 @@ public class DistributedLockApplicationTests {
             this.age = age;
         }
 
-        public User(String name, int age) {
+        User(String name, int age) {
             this.name = name;
             this.age = age;
         }
