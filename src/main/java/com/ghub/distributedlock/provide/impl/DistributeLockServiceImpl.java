@@ -15,6 +15,8 @@ import redis.clients.jedis.JedisCommands;
 import java.util.UUID;
 
 /**
+ * dubbo 服务提供锁相关服务
+ *
  * @author loufeng
  * @date 2018/7/17 上午11:00.
  */
@@ -69,6 +71,13 @@ public class DistributeLockServiceImpl implements DistributeLockService {
         return false;
     }
 
+    /**
+     * 执行NX set原子操作
+     *
+     * @param key    缓存key
+     * @param expire 过期时间
+     * @return true/false
+     */
     private boolean setRedis(String key, long expire) {
         try {
             String result = (String) redisTemplate.execute((RedisCallback<String>) connection -> {
